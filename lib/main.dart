@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wallet/blocs/auth/auth_bloc.dart';
 import 'package:wallet/shared/theme.dart';
 import 'package:wallet/ui/pages/data_package_page.dart';
 import 'package:wallet/ui/pages/data_provider_pages.dart';
@@ -30,46 +32,51 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          scaffoldBackgroundColor: lightBackgroundColor,
-          appBarTheme: AppBarTheme(
-            backgroundColor: lightBackgroundColor,
-            elevation: 0,
-            centerTitle: true,
-            iconTheme: IconThemeData(
-              color: blackColor,
-            ),
-            titleTextStyle: blackTextStyle.copyWith(
-              fontSize: 20,
-              fontWeight: semiBold,
-            ),
-          )),
-      routes: {
-        '/': (context) => const SplashPage(),
-        '/onboarding': (context) => const OnbordingPage(),
-        '/sign-in': (context) => const SignInPage(),
-        '/sign-up': (context) => const SignUpPage(),
-        '/sign-up-set-profile': (context) => const SignUpSetProfilePage(),
-        '/sign-up-set-ktp': (context) => const SignUpSetKtpPage(),
-        '/sign-up-success': (context) => const SignUpSuccessPage(),
-        '/home': (context) => const HomePage(),
-        '/profile': (context) => const ProfilePage(),
-        '/pin': (context) => const PinPage(),
-        '/profile-edit': (context) => const ProfileEditPage(),
-        '/profile-edit-pin': (context) => const ProfileEditPinPage(),
-        '/profile-edit-success': (context) => const ProfileEditSuccess(),
-        '/topup': (context) => const TopupPage(),
-        '/topup-amount': (context) => const TopupAmountPage(),
-        '/topup-success': (context) => const TopupSuccess(),
-        '/tranfer': (context) => const TransferPage(),
-        '/transfer-amount': (context) => const TransferAmountPage(),
-        '/transfer-success': (context) => const TransferSuccessPage(),
-        '/data-provider': (context) => const DataProviderPages(),
-        '/data-package': (context) => const DataPackagePage(),
-        '/data-success': (context) => const DataSuccessPage(),
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            scaffoldBackgroundColor: lightBackgroundColor,
+            appBarTheme: AppBarTheme(
+              backgroundColor: lightBackgroundColor,
+              elevation: 0,
+              centerTitle: true,
+              iconTheme: IconThemeData(
+                color: blackColor,
+              ),
+              titleTextStyle: blackTextStyle.copyWith(
+                fontSize: 20,
+                fontWeight: semiBold,
+              ),
+            )),
+        routes: {
+          '/': (context) => const SplashPage(),
+          '/onboarding': (context) => const OnbordingPage(),
+          '/sign-in': (context) => const SignInPage(),
+          '/sign-up': (context) => const SignUpPage(),
+          '/sign-up-success': (context) => const SignUpSuccessPage(),
+          '/home': (context) => const HomePage(),
+          '/profile': (context) => const ProfilePage(),
+          '/pin': (context) => const PinPage(),
+          '/profile-edit': (context) => const ProfileEditPage(),
+          '/profile-edit-pin': (context) => const ProfileEditPinPage(),
+          '/profile-edit-success': (context) => const ProfileEditSuccess(),
+          '/topup': (context) => const TopupPage(),
+          '/topup-amount': (context) => const TopupAmountPage(),
+          '/topup-success': (context) => const TopupSuccess(),
+          '/tranfer': (context) => const TransferPage(),
+          '/transfer-amount': (context) => const TransferAmountPage(),
+          '/transfer-success': (context) => const TransferSuccessPage(),
+          '/data-provider': (context) => const DataProviderPages(),
+          '/data-package': (context) => const DataPackagePage(),
+          '/data-success': (context) => const DataSuccessPage(),
+        },
+      ),
     );
   }
 }
