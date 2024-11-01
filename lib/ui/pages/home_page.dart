@@ -178,6 +178,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -190,12 +191,14 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 28,
           ),
-          Text(
-            '**** **** **** 1280',
-            style: whiteTextStyle.copyWith(
-              fontSize: 18,
-              fontWeight: medium,
-              letterSpacing: 6,
+          Expanded(
+            child: Text(
+              '**** **** **** 1280',
+              style: whiteTextStyle.copyWith(
+                fontSize: 18,
+                fontWeight: medium,
+                letterSpacing: 6,
+              ),
             ),
           ),
           const SizedBox(

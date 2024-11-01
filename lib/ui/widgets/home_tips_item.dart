@@ -10,7 +10,7 @@ class HomeTipsItem extends StatelessWidget {
     super.key,
     required this.imgUrl,
     required this.title,
-    required this.Url,
+    required this.Url, 
   });
 
   @override
@@ -22,7 +22,7 @@ class HomeTipsItem extends StatelessWidget {
         }
       },
       child: Container(
-        width: 155,
+        width: 145,
         height: 176,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
