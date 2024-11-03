@@ -170,9 +170,7 @@ class _SignUpSetKtpPageState extends State<SignUpSetKtpPage> {
                 onPressed: () {
                   context.read<AuthBloc>().add(
                         AuthRegister(
-                          widget.data.copWith(
-                            ktp: null,
-                          ),
+                          widget.data,
                         ),
                       );
                 },
