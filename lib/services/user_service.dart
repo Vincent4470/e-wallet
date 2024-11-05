@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:wallet/models/user_edit_form_model.dart';
 import 'package:wallet/services/auth_service.dart';

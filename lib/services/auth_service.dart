@@ -72,6 +72,29 @@ class AuthService {
     }
   }
 
+  Future<void> logout() async {
+    try {
+      final token = await getToken();
+
+      final res = await http.post(
+        Uri.parse(
+          '$baseUrl/logout',
+        ),
+        headers: {
+          'Authorization': token,
+        },
+      );
+
+      if (res.statusCode == 200) {
+        await clearLocalStorage();
+      } else {
+        throw jsonDecode(res.body)['message'];
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<void> storeCredentialToLocal(UserModel user) async {
     try {
       const storege = FlutterSecureStorage();
@@ -81,12 +104,12 @@ class AuthService {
     } catch (e) {}
   }
 
-  Future<SignInFormModel> getCredentialFromLocal() async{
+  Future<SignInFormModel> getCredentialFromLocal() async {
     try {
       const storage = FlutterSecureStorage();
       Map<String, String> values = await storage.readAll();
 
-      if(values ['email'] == null || values ['password'] == null) {
+      if (values['email'] == null || values['password'] == null) {
         throw 'authenticated';
       } else {
         final SignInFormModel data = SignInFormModel(
@@ -101,21 +124,19 @@ class AuthService {
   }
 
   Future<String> getToken() async {
-
     String token = '';
 
     const storage = FlutterSecureStorage();
     String? value = await storage.read(key: 'token');
 
-  if(value != null){
-    token = 'Bearer' + value;
+    if (value != null) {
+      token = 'Bearer' + value;
+    }
+
+    return token;
   }
 
-  return token;
-
-  }
-
-  Future<void> clearLocalStorage() async{
+  Future<void> clearLocalStorage() async {
     const storage = FlutterSecureStorage();
     await storage.deleteAll();
   }

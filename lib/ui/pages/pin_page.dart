@@ -33,7 +33,7 @@ class _PinPageState extends State<PinPage> {
         });
         showCustomSnackbar(
           context,
-          'Silakan masukkan Pin lagi. Coba Lagi, Paham!!!',
+          'Silakan masukkan Pin lagi Cok.Pin yang ente masukkin salah, Paham?',
         );
       }
     }
@@ -114,8 +114,8 @@ class _PinPageState extends State<PinPage> {
                 height: 66,
               ),
               Wrap(
-                spacing: 40,
-                runSpacing: 40,
+                spacing: 20,
+                runSpacing: 20,
                 children: [
                   CustomInputButton(
                     title: '1',
