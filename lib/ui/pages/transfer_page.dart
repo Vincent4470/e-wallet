@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:wallet/blocs/auth/auth_bloc.dart';
+import 'package:wallet/blocs/user/user_bloc.dart';
+import 'package:wallet/models/user_model.dart';
 import 'package:wallet/shared/theme.dart';
 import 'package:wallet/ui/widgets/buttons.dart';
 import 'package:wallet/ui/widgets/forms.dart';
 import 'package:wallet/ui/widgets/transfer_recent_user_item.dart';
 import 'package:wallet/ui/widgets/transfer_result_user_item.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TransferPage extends StatelessWidget {
+class TransferPage extends StatefulWidget {
   const TransferPage({super.key});
+
+  @override
+  State<TransferPage> createState() => _TransferPageState();
+}
+
+class _TransferPageState extends State<TransferPage> {
+  final usernameController = TextEditingController(text: '');
+  UserModel? selectedUser;
+
+  late UserBloc userBloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    userBloc = context.read<UserBloc>()..add(UserGetRecent());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,23 +59,31 @@ class TransferPage extends StatelessWidget {
           CustomFormField(
             title: 'by username',
             isShowTitle: false,
-          ),
-          // buildRecentUsers(),
-          buildResult(),
-          const SizedBox(
-            height: 274,
-          ),
-          CustomeFilledButton(
-            title: 'Continue',
-            onPressed: () {
-              Navigator.pushNamed(context, '/transfer-amount');
+            controller: usernameController,
+            onFieldSubmitted: (value) {
+              if (value.isEmpty) {
+                userBloc.add(UserGetByUsername(usernameController.text));
+              } else {
+                userBloc.add(UserGetRecent());
+              }
+              setState(() {});
             },
           ),
-          const SizedBox(
-            height: 50,
-          )
+          usernameController.text.isEmpty ? buildRecentUsers() : buildResult()
         ],
       ),
+      floatingActionButton: selectedUser != null
+          ? Container(
+              margin: const EdgeInsets.all(24),
+              child: CustomeFilledButton(
+                title: 'Continue',
+                onPressed: () {
+                  Navigator.pushNamed(context, '/transfer-amount');
+                },
+              ),
+            )
+          : Container(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

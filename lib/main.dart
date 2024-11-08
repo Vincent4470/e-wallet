@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallet/blocs/auth/auth_bloc.dart';
+import 'package:wallet/blocs/user/user_bloc.dart';
 import 'package:wallet/shared/theme.dart';
 import 'package:wallet/ui/pages/data_package_page.dart';
 import 'package:wallet/ui/pages/data_provider_pages.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => AuthBloc()..add(AuthGetCurrentUser()),
+        ),
+        BlocProvider(
+          create: (context) => UserBloc(),
         ),
       ],
       child: MaterialApp(
