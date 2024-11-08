@@ -119,7 +119,7 @@ class HomePage extends StatelessWidget {
                       height: 2,
                     ),
                     Text(
-                      state.user.username.toString(),
+                      state.user.name.toString(),
                       style: blackTextStyle.copyWith(
                         fontSize: 20,
                         fontWeight: semiBold,
