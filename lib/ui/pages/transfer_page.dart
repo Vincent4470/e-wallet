@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wallet/blocs/auth/auth_bloc.dart';
 import 'package:wallet/blocs/user/user_bloc.dart';
 import 'package:wallet/models/user_model.dart';
 import 'package:wallet/shared/theme.dart';
