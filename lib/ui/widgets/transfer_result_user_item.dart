@@ -20,8 +20,8 @@ class TransferResultUserItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 155,
-      height: 175,
+      width: 135,
+      height: 155,
       padding: const EdgeInsets.symmetric(
         horizontal: 14,
         vertical: 22,
@@ -37,8 +37,8 @@ class TransferResultUserItem extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 70,
-            height: 70,
+            width: 50,
+            height: 50,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(

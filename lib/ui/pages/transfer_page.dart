@@ -115,8 +115,8 @@ Widget buildResult() {
           height: 14,
         ),
         Wrap(
-          spacing: 17,
-          runSpacing: 17,
+          spacing: 20,
+          runSpacing: 20,
           children: const [
             const TransferResultUserItem(
               imageUrl: 'assets/images/friend_1.png',
@@ -126,7 +126,7 @@ Widget buildResult() {
             ),
             const TransferResultUserItem(
               imageUrl: 'assets/images/friend_2.png',
-              name: 'MAtthew',
+              name: 'Matthew',
               username: 'MAtthew',
               isVerified: true,
               isSelected: true,
