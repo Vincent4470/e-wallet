@@ -544,8 +544,8 @@ class MoreDialog extends StatelessWidget {
               height: 13,
             ),
             Wrap(
-              spacing: 29,
-              runSpacing: 25,
+              spacing: 20,
+              runSpacing: 20,
               children: [
                 HomeServicesItem(
                   iconUrl: 'assets/icons/data.png',
