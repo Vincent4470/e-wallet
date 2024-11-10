@@ -254,7 +254,6 @@ class _TopupAmountPageState extends State<TopupAmountPage> {
                   onPressed: () async {
                     if (await Navigator.pushNamed(context, '/pin') == true) {
                       final authState = context.read<AuthBloc>().state;
-
                       String pin = '';
                       if (authState is AuthSuccess) {
                         pin = authState.user.pin!;

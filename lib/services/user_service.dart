@@ -26,23 +26,21 @@ class UserService {
     }
   }
 
-  Future<List<UserModel>> getRecentUsers() async {
+  Future<List<UserModel>> getRecentUsers({int limit = 10}) async {
     try {
       final token = await AuthService().getToken();
 
       final res = await http.get(
-          Uri.parse(
-            '$baseUrl/transfer_histories',
-          ),
-          headers: {
-            'Authorization': token,
-          });
+        Uri.parse('$baseUrl/transfer_histories?limit=$limit'),
+        headers: {
+          'Authorization': token,
+        },
+      );
 
       if (res.statusCode == 200) {
+        final body = jsonDecode(res.body);
         return List<UserModel>.from(
-          jsonDecode(res.body)['data'].map(
-            (user) => UserModel.fromJson(user),
-          ),
+          body['data'].map((user) => UserModel.fromJson(user)),
         );
       }
 
@@ -51,30 +49,61 @@ class UserService {
       rethrow;
     }
   }
+
+  // Future<List<UserModel>> getUsersByUsername(String username) async {
+  //   try {
+  //     final token = await AuthService().getToken();
+
+  //     final res = await http.get(
+  //         Uri.parse(
+  //           '$baseUrl/users/$username',
+  //         ),
+  //         headers: {
+  //           'Authorization': token,
+  //         });
+
+  //     if (res.statusCode == 200) {
+  //       return List<UserModel>.from(
+  //         jsonDecode(res.body).map(
+  //           (user) => UserModel.fromJson(user),
+  //         ),
+  //       );
+  //     }
+
+  //     throw jsonDecode(res.body)['message'];
+  //   } catch (e) {
+  //     rethrow;
+  //   }
+  // }
 
   Future<List<UserModel>> getUsersByUsername(String username) async {
-    try {
-      final token = await AuthService().getToken();
+  try {
+    final token = await AuthService().getToken();
+    print('Token: $token');  // Log token untuk memastikan valid
 
-      final res = await http.get(
-          Uri.parse(
-            '$baseUrl/users/$username',
-          ),
-          headers: {
-            'Authorization': token,
-          });
+    final res = await http.get(
+        Uri.parse(
+          '$baseUrl/users/$username',
+        ),
+        headers: {
+          'Authorization': token,
+        });
 
-      if (res.statusCode == 200) {
-        return List<UserModel>.from(
-          jsonDecode(res.body).map(
-            (user) => UserModel.fromJson(user),
-          ),
-        );
-      }
+    print('Response: ${res.body}');  // Log responsenya
 
-      throw jsonDecode(res.body)['message'];
-    } catch (e) {
-      rethrow;
+    if (res.statusCode == 200) {
+      return List<UserModel>.from(
+        jsonDecode(res.body).map(
+          (user) => UserModel.fromJson(user),
+        ),
+      );
     }
+
+    throw jsonDecode(res.body)['message'];
+  } catch (e) {
+    print('Error: $e');
+    rethrow;
   }
+}
+
 }

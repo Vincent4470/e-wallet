@@ -19,7 +19,6 @@ import 'package:wallet/ui/pages/sign_up_success_page.dart';
 import 'package:wallet/ui/pages/splash_page.dart';
 import 'package:wallet/ui/pages/topup_page.dart';
 import 'package:wallet/ui/pages/topup_success.dart';
-import 'package:wallet/ui/pages/transfer_amount_page.dart';
 import 'package:wallet/ui/pages/transfer_page.dart';
 import 'package:wallet/ui/pages/transfer_success_page.dart';
 
@@ -70,7 +69,6 @@ class MyApp extends StatelessWidget {
           '/topup': (context) => const TopupPage(),
           '/topup-success': (context) => const TopupSuccess(),
           '/tranfer': (context) => const TransferPage(),
-          '/transfer-amount': (context) => const TransferAmountPage(),
           '/transfer-success': (context) => const TransferSuccessPage(),
           '/data-provider': (context) => const DataProviderPages(),
           '/data-package': (context) => const DataPackagePage(),

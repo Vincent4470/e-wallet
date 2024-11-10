@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:wallet/models/topup_form_model.dart';
+import 'package:wallet/models/transfer_form_model.dart';
 import 'package:wallet/services/auth_service.dart';
 import 'package:wallet/shared/shared_values.dart';
 
@@ -38,6 +39,29 @@ class TransactionService {
       }
     } catch (e) {
       print('Error during top-up: $e');  // Menambahkan log error
+      rethrow;
+    }
+  }
+
+
+  Future<void> transfer(TransferFormModel data) async {
+    try {
+
+      final token = await AuthService().getToken();
+
+      final res = await http.post(
+        Uri.parse('$baseUrl/transfers'),
+        headers: {
+          'Authorization': token,
+        },
+        body: data.toJson(),
+      );
+
+      if (res.statusCode != 200) {
+        throw jsonDecode(res.body)['message'];
+      }
+        
+    } catch (e) {
       rethrow;
     }
   }

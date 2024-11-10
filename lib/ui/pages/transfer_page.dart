@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:wallet/blocs/user/user_bloc.dart';
+import 'package:wallet/models/transfer_form_model.dart';
 import 'package:wallet/models/user_model.dart';
 import 'package:wallet/shared/theme.dart';
+import 'package:wallet/ui/pages/transfer_amount_page.dart';
 import 'package:wallet/ui/widgets/buttons.dart';
 import 'package:wallet/ui/widgets/forms.dart';
 import 'package:wallet/ui/widgets/transfer_recent_user_item.dart';
-import 'package:wallet/ui/widgets/transfer_result_user_item.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wallet/ui/widgets/transfer_result_user_item.dart';
 
 class TransferPage extends StatefulWidget {
   const TransferPage({super.key});
@@ -63,6 +65,7 @@ class _TransferPageState extends State<TransferPage> {
               if (value.isEmpty) {
                 userBloc.add(UserGetByUsername(usernameController.text));
               } else {
+                selectedUser = null;
                 userBloc.add(UserGetRecent());
               }
               setState(() {});
@@ -77,7 +80,16 @@ class _TransferPageState extends State<TransferPage> {
               child: CustomeFilledButton(
                 title: 'Continue',
                 onPressed: () {
-                  Navigator.pushNamed(context, '/transfer-amount');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => TransferAmountPage(
+                        data: TransferFormModel(
+                          sendTo: selectedUser!.username,
+                        ),
+                      ),
+                    ),
+                  );
                 },
               ),
             )
@@ -85,10 +97,9 @@ class _TransferPageState extends State<TransferPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
-}
 
-Widget buildRecentUsers() {
-  return Container(
+  Widget buildRecentUsers() {
+    return Container(
       margin: const EdgeInsets.only(
         top: 40,
       ),
@@ -105,64 +116,87 @@ Widget buildRecentUsers() {
           const SizedBox(
             height: 14,
           ),
-          const TransferRecentUserItem(
-            imageUrl: 'assets/images/friend_1.png',
-            name: 'Megawati',
-            username: 'Megawati',
-            isVerified: true,
+          BlocBuilder<UserBloc, UserState>(
+            builder: (context, state) {
+              if (state is UserSuccess) {
+                return Column(
+                  children: state.users.map((user) {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TransferAmountPage(
+                              data: TransferFormModel(
+                                sendTo: user.username,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: TransferRecentUserItem(
+                        user: user,
+                      ),
+                    );
+                  }).toList(),
+                );
+              }
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget buildResult() {
+    return Container(
+      margin: const EdgeInsets.only(
+        top: 40,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Result',
+            style: blackTextStyle.copyWith(
+              fontSize: 16,
+              fontWeight: semiBold,
+            ),
           ),
-          const TransferRecentUserItem(
-            imageUrl: 'assets/images/friend_2.png',
-            name: 'Matthew',
-            username: 'Matthew',
+          const SizedBox(
+            height: 14,
           ),
-          const TransferRecentUserItem(
-            imageUrl: 'assets/images/friend_3.png',
-            name: 'Silvan',
-            username: 'Silvan',
+          BlocBuilder<UserBloc, UserState>(
+            builder: (context, state) {
+              if (state is UserSuccess) {
+                return Wrap(
+                  spacing: 17,
+                  runSpacing: 17,
+                  children: state.users.map((user) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedUser = user;
+                        });
+                      },
+                      child: TransferResultUserItem(
+                        user: user,
+                        isSelected: user.id == selectedUser?.id,
+                      ),
+                    );
+                  }).toList(),
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
           ),
         ],
-      ));
-}
-
-Widget buildResult() {
-  return Container(
-    margin: const EdgeInsets.only(
-      top: 40,
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Result',
-          style: blackTextStyle.copyWith(
-            fontSize: 16,
-            fontWeight: semiBold,
-          ),
-        ),
-        const SizedBox(
-          height: 14,
-        ),
-        Wrap(
-          spacing: 20,
-          runSpacing: 20,
-          children: const [
-            const TransferResultUserItem(
-              imageUrl: 'assets/images/friend_1.png',
-              name: 'Megawati',
-              username: 'Megawati',
-              isVerified: true,
-            ),
-            const TransferResultUserItem(
-              imageUrl: 'assets/images/friend_2.png',
-              name: 'Matthew',
-              username: 'MAtthew',
-              isVerified: true,
-              isSelected: true,
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
+      ),
+    );
+  }
 }
