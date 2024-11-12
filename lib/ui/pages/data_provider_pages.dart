@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wallet/blocs/auth/auth_bloc.dart';
 import 'package:wallet/shared/shared_metod.dart';
 import 'package:wallet/shared/theme.dart';
 import 'package:wallet/ui/widgets/buttons.dart';
@@ -42,26 +44,34 @@ class DataProviderPages extends StatelessWidget {
               const SizedBox(
                 width: 16,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '8008 2208 1996',
-                    style: blackTextStyle.copyWith(
-                      fontSize: 16,
-                      fontWeight: medium,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    'Balance ${formatCurrency(18000000)}',
-                    style: greyTextStyle.copyWith(
-                      fontSize: 12,
-                    ),
-                  )
-                ],
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if (state is AuthSuccess) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          state.user.cardNumber!.replaceAllMapped(
+                              RegExp(r".{4}"), (match) => "${match.group(0)} "),
+                          style: blackTextStyle.copyWith(
+                            fontSize: 16,
+                            fontWeight: medium,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 2,
+                        ),
+                        Text(
+                          'Balance ${formatCurrency(state.user.balance ?? 0)}',
+                          style: greyTextStyle.copyWith(
+                            fontSize: 12,
+                          ),
+                        )
+                      ],
+                    );
+                  }
+                  return Container();
+                },
               )
             ],
           ),

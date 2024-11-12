@@ -40,26 +40,28 @@ class TransferRecentUserItem extends StatelessWidget {
               ),
             ),
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                user.name.toString(),
-                style: blackTextStyle.copyWith(
-                  fontSize: 16,
-                  fontWeight: medium,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  user.name.toString(),
+                  style: blackTextStyle.copyWith(
+                    fontSize: 16,
+                    fontWeight: medium,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 2,
-              ),
-              Text(
-                '@${user.username}',
-                style: greyTextStyle.copyWith(
-                  fontSize: 12,
+                const SizedBox(
+                  height: 2,
                 ),
-              ),
-            ],
+                Text(
+                  '@${user.username}',
+                  style: greyTextStyle.copyWith(
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
           ),
           const Spacer(),
           if (user.verified == 1)

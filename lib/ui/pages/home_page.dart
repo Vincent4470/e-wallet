@@ -213,7 +213,7 @@ class HomePage extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    '**** **** **** ${state.user.cardNumber!.substring(12, 16)}',
+                    '**** **** **** z${state.user.cardNumber!.substring(12, 16)}',
                     style: whiteTextStyle.copyWith(
                       fontSize: 18,
                       fontWeight: medium,

@@ -60,9 +60,10 @@ class _ProfileEditPinPageState extends State<ProfileEditPinPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomFormField(
-                      title: 'Old Pin',
+                      title: 'Old Pin ',
                       controller: oldPinController,
                       obscureText: true,
+                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(
                       height: 16,
@@ -71,6 +72,7 @@ class _ProfileEditPinPageState extends State<ProfileEditPinPage> {
                       title: 'New Pin',
                       controller: newPinController,
                       obscureText: true,
+                      keyboardType: TextInputType.number,
                     ),
                     const SizedBox(
                       height: 16,
