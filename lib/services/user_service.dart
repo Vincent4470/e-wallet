@@ -50,60 +50,60 @@ class UserService {
     }
   }
 
-  // Future<List<UserModel>> getUsersByUsername(String username) async {
-  //   try {
-  //     final token = await AuthService().getToken();
-
-  //     final res = await http.get(
-  //         Uri.parse(
-  //           '$baseUrl/users/$username',
-  //         ),
-  //         headers: {
-  //           'Authorization': token,
-  //         });
-
-  //     if (res.statusCode == 200) {
-  //       return List<UserModel>.from(
-  //         jsonDecode(res.body).map(
-  //           (user) => UserModel.fromJson(user),
-  //         ),
-  //       );
-  //     }
-
-  //     throw jsonDecode(res.body)['message'];
-  //   } catch (e) {
-  //     rethrow;
-  //   }
-  // }
-
   Future<List<UserModel>> getUsersByUsername(String username) async {
-  try {
-    final token = await AuthService().getToken();
-    print('Token: $token');  // Log token untuk memastikan valid
+    try {
+      final token = await AuthService().getToken();
 
-    final res = await http.get(
-        Uri.parse(
-          '$baseUrl/users/$username',
-        ),
-        headers: {
-          'Authorization': token,
-        });
+      final res = await http.get(
+          Uri.parse(
+            '$baseUrl/users/$username',
+          ),
+          headers: {
+            'Authorization': token,
+          });
 
-    print('Response: ${res.body}');  // Log responsenya
+      if (res.statusCode == 200) {
+        return List<UserModel>.from(
+          jsonDecode(res.body).map(
+            (user) => UserModel.fromJson(user),
+          ),
+        );
+      }
 
-    if (res.statusCode == 200) {
-      return List<UserModel>.from(
-        jsonDecode(res.body).map(
-          (user) => UserModel.fromJson(user),
-        ),
-      );
+      throw jsonDecode(res.body)['message'];
+    } catch (e) {
+      rethrow;
     }
-
-    throw jsonDecode(res.body)['message'];
-  } catch (e) {
-    print('Error: $e');
-    rethrow;
   }
-}
+
+//   Future<List<UserModel>> getUsersByUsername(String username) async {
+//   try {
+//     final token = await AuthService().getToken();
+//     print('Token: $token');  // Log token untuk memastikan valid
+
+//     final res = await http.get(
+//         Uri.parse(
+//           '$baseUrl/users/$username',
+//         ),
+//         headers: {
+//           'Authorization': token,
+//         });
+
+//     print('Response: ${res.body}');  // Log responsenya
+
+//     if (res.statusCode == 200) {
+//       return List<UserModel>.from(
+//         jsonDecode(res.body).map(
+//           (user) => UserModel.fromJson(user),
+//         ),
+//       );
+//     }
+
+//     throw jsonDecode(res.body)['message'];
+//   } catch (e) {
+//     print('Error: $e');
+//     rethrow;
+//   }
+// }
 
 }

@@ -62,7 +62,7 @@ class _TransferPageState extends State<TransferPage> {
             isShowTitle: false,
             controller: usernameController,
             onFieldSubmitted: (value) {
-              if (value.isEmpty) {
+              if (value.isNotEmpty) {
                 userBloc.add(UserGetByUsername(usernameController.text));
               } else {
                 selectedUser = null;
@@ -173,8 +173,8 @@ class _TransferPageState extends State<TransferPage> {
             builder: (context, state) {
               if (state is UserSuccess) {
                 return Wrap(
-                  spacing: 17,
-                  runSpacing: 17,
+                  spacing: 15,
+                  runSpacing: 15,
                   children: state.users.map((user) {
                     return GestureDetector(
                       onTap: () {

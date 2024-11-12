@@ -114,8 +114,8 @@ class _PinPageState extends State<PinPage> {
                 height: 66,
               ),
               Wrap(
-                spacing: 20,
-                runSpacing: 20,
+                spacing: 30,
+                runSpacing: 30,
                 children: [
                   CustomInputButton(
                     title: '1',
