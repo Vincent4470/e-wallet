@@ -1,0 +1,30 @@
+part of 'operator_card_bloc.dart';
+
+sealed class OperatorCardState extends Equatable {
+  const OperatorCardState();
+
+  @override
+  List<Object> get props => [];
+}
+
+final class OperatorCardInitial extends OperatorCardState {}
+
+final class OperatorCardLoading extends OperatorCardState {}
+
+final class OperatorCardFaild extends OperatorCardState {
+  final String e;
+  const OperatorCardFaild({required this.e});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [e];
+}
+
+final class OperatorCardSuccess extends OperatorCardState {
+  final List<OperatorCardModel> operatorCards;
+  const OperatorCardSuccess(this.operatorCards);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [operatorCards];
+}

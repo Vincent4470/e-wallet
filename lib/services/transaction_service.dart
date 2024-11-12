@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:wallet/models/data_plan_form_model.dart';
 import 'package:wallet/models/topup_form_model.dart';
 import 'package:wallet/models/transfer_form_model.dart';
 import 'package:wallet/services/auth_service.dart';
@@ -51,6 +52,28 @@ class TransactionService {
 
       final res = await http.post(
         Uri.parse('$baseUrl/transfers'),
+        headers: {
+          'Authorization': token,
+        },
+        body: data.toJson(),
+      );
+
+      if (res.statusCode != 200) {
+        throw jsonDecode(res.body)['message'];
+      }
+        
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> dataPlan(DataPlanFormModel data) async {
+    try {
+
+      final token = await AuthService().getToken();
+
+      final res = await http.post(
+        Uri.parse('$baseUrl/data_plans'),
         headers: {
           'Authorization': token,
         },
