@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallet/blocs/auth/auth_bloc.dart';
+import 'package:wallet/blocs/transaction/transaction_bloc.dart';
 import 'package:wallet/shared/shared_metod.dart';
 import 'package:wallet/shared/theme.dart';
 import 'package:wallet/ui/widgets/home_latest_transaction_item.dart';
@@ -376,9 +377,14 @@ class HomePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               color: whiteColor,
             ),
-            child: Column(
-              children: [
-                HomeLatestTransactionItem(
+            child: BlocProvider(
+              create: (context) => TransactionBloc()..add(TransactionGet()),
+              child: BlocBuilder<TransactionBloc, TransactionState>(
+                builder: (context, state) {
+                  if (state is TransactionSuccess) {
+                    return Column(
+                      children: [
+                        HomeLatestTransactionItem(
                   iconUrl: 'assets/icons/transaksi_1.png',
                   title: 'Top Up',
                   time: 'Yesterday',
@@ -408,7 +414,14 @@ class HomePage extends StatelessWidget {
                   time: 'Aug 27',
                   value: '- ${formatCurrency(12300000, symbol: '')}',
                 ),
-              ],
+                      ]
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                },
+              ),
             ),
           )
         ],

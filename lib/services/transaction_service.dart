@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:wallet/models/data_plan_form_model.dart';
 import 'package:wallet/models/topup_form_model.dart';
+import 'package:wallet/models/transaction_model.dart';
 import 'package:wallet/models/transfer_form_model.dart';
 import 'package:wallet/services/auth_service.dart';
 import 'package:wallet/shared/shared_values.dart';
@@ -39,15 +40,13 @@ class TransactionService {
         throw jsonDecode(res.body)['message'];
       }
     } catch (e) {
-      print('Error during top-up: $e');  // Menambahkan log error
+      print('Error during top-up: $e'); // Menambahkan log error
       rethrow;
     }
   }
 
-
   Future<void> transfer(TransferFormModel data) async {
     try {
-
       final token = await AuthService().getToken();
 
       final res = await http.post(
@@ -61,7 +60,6 @@ class TransactionService {
       if (res.statusCode != 200) {
         throw jsonDecode(res.body)['message'];
       }
-        
     } catch (e) {
       rethrow;
     }
@@ -69,7 +67,6 @@ class TransactionService {
 
   Future<void> dataPlan(DataPlanFormModel data) async {
     try {
-
       final token = await AuthService().getToken();
 
       final res = await http.post(
@@ -83,7 +80,33 @@ class TransactionService {
       if (res.statusCode != 200) {
         throw jsonDecode(res.body)['message'];
       }
-        
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<TransactionModel>> getTransactions() async {
+    try {
+      final token = await AuthService().getToken();
+
+      final res = await http.get(
+        Uri.parse(
+          '$baseUrl/transactions',
+        ),
+        headers: {
+          'Authorization': token,
+        },
+      );
+      
+      if (res.statusCode == 200) {
+        return List<TransactionModel>.from(
+          jsonDecode(res.body)['data'].map(
+            (transaction) => TransactionModel.fromJson(transaction),
+          ),
+        ).toList();
+      }
+
+      throw jsonDecode(res.body)['message'];
     } catch (e) {
       rethrow;
     }
