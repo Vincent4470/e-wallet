@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wallet/blocs/auth/auth_bloc.dart';
+import 'package:wallet/blocs/tip/tip_bloc.dart';
 import 'package:wallet/blocs/transaction/transaction_bloc.dart';
+import 'package:wallet/blocs/user/user_bloc.dart';
+import 'package:wallet/models/transfer_form_model.dart';
 import 'package:wallet/shared/shared_metod.dart';
 import 'package:wallet/shared/theme.dart';
+import 'package:wallet/ui/pages/transfer_amount_page.dart';
 import 'package:wallet/ui/widgets/home_latest_transaction_item.dart';
 import 'package:wallet/ui/widgets/home_services_item.dart';
 import 'package:wallet/ui/widgets/home_tips_item.dart';
@@ -383,38 +387,11 @@ class HomePage extends StatelessWidget {
                 builder: (context, state) {
                   if (state is TransactionSuccess) {
                     return Column(
-                      children: [
-                        HomeLatestTransactionItem(
-                  iconUrl: 'assets/icons/transaksi_1.png',
-                  title: 'Top Up',
-                  time: 'Yesterday',
-                  value: '+ ${formatCurrency(450000, symbol: '')}',
-                ),
-                HomeLatestTransactionItem(
-                  iconUrl: 'assets/icons/transaksi_2.png',
-                  title: 'Cashback',
-                  time: 'Sep 11',
-                  value: '+ ${formatCurrency(22500, symbol: '')}',
-                ),
-                HomeLatestTransactionItem(
-                  iconUrl: 'assets/icons/transaksi_3.png',
-                  title: 'Withdraw',
-                  time: 'Sep 2',
-                  value: '- ${formatCurrency(5000, symbol: '')}',
-                ),
-                HomeLatestTransactionItem(
-                  iconUrl: 'assets/icons/transaksi_4.png',
-                  title: 'Tranfer',
-                  time: 'Aug 27',
-                  value: '- ${formatCurrency(123500, symbol: '')}',
-                ),
-                HomeLatestTransactionItem(
-                  iconUrl: 'assets/icons/transaksi_5.png',
-                  title: 'Tranfer',
-                  time: 'Aug 27',
-                  value: '- ${formatCurrency(12300000, symbol: '')}',
-                ),
-                      ]
+                      children: state.transactions.map((transaction) {
+                        return HomeLatestTransactionItem(
+                          transaction: transaction,
+                        );
+                      }).toList(),
                     );
                   }
                   return const Center(
@@ -447,27 +424,42 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 14,
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: const [
-                HomeUserItem(
-                  imageUrl: 'assets/images/friend_1.png',
-                  username: 'Rana',
-                ),
-                HomeUserItem(
-                  imageUrl: 'assets/images/friend_2.png',
-                  username: 'Sari Roti',
-                ),
-                HomeUserItem(
-                  imageUrl: 'assets/images/friend_3.png',
-                  username: 'Evan',
-                ),
-                HomeUserItem(
-                  imageUrl: 'assets/images/friend_4.png',
-                  username: 'Faudzan',
-                ),
-              ],
+          BlocProvider(
+            create: (context) => UserBloc()..add(UserGetRecent()),
+            child: BlocBuilder<UserBloc, UserState>(
+              builder: (context, state) {
+                if (state is UserSuccess) {
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: state.users.map(
+                        (user) {
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => TransferAmountPage(
+                                    data: TransferFormModel(
+                                      sendTo: user.username,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            child: HomeUserItem(
+                              user: user,
+                            ),
+                          );
+                        },
+                      ).toList(),
+                    ),
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
             ),
           )
         ],
@@ -494,31 +486,24 @@ class HomePage extends StatelessWidget {
           const SizedBox(
             height: 14,
           ),
-          Wrap(
-            spacing: 17,
-            runSpacing: 18,
-            children: [
-              HomeTipsItem(
-                imgUrl: 'assets/images/friend_tips1.png',
-                title: 'Best tips for using a credit card',
-                Url: 'https://www.google.com',
-              ),
-              HomeTipsItem(
-                imgUrl: 'assets/images/friend_tips2.png',
-                title: 'Spot the good pie of finance model',
-                Url: 'https://www.google.com',
-              ),
-              HomeTipsItem(
-                imgUrl: 'assets/images/friend_tips3.png',
-                title: 'Great hack to get better advices',
-                Url: 'https://www.google.com',
-              ),
-              HomeTipsItem(
-                imgUrl: 'assets/images/friend_tips4.png',
-                title: 'save more penny buy this instead',
-                Url: 'https://www.google.com',
-              ),
-            ],
+          BlocProvider(
+            create: (context) => TipBloc()..add(TipGet()),
+            child: BlocBuilder<TipBloc, TipState>(
+              builder: (context, state) {
+                if (state is TipSuccess) {
+                  return Wrap(
+                    spacing: 17,
+                    runSpacing: 18,
+                    children: state.tips.map((tip) {
+                      return HomeTipsItem(tip: tip);
+                    }).toList(),
+                  );
+                }
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
           )
         ],
       ),
