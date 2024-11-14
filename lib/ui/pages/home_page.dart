@@ -124,7 +124,7 @@ class HomePage extends StatelessWidget {
                       height: 2,
                     ),
                     Text(
-                      state.user.name.toString(),
+                      state.user.username.toString(),
                       style: blackTextStyle.copyWith(
                         fontSize: 20,
                         fontWeight: semiBold,
