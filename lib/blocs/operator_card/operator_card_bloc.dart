@@ -18,7 +18,7 @@ class OperatorCardBloc extends Bloc<OperatorCardEvent, OperatorCardState> {
 
           emit(OperatorCardSuccess(operatorCards));
         } catch (e) {
-          emit(OperatorCardFaild(e: toString()));
+          emit(OperatorCardFaild(e: e.toString()));
         }
       }
     });

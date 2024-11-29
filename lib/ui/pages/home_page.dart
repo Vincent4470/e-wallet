@@ -218,7 +218,10 @@ class HomePage extends StatelessWidget {
                 ),
                 Expanded(
                   child: Text(
-                    '**** **** **** z${state.user.cardNumber!.substring(12, 16)}',
+                    (state.user.cardNumber != null &&
+                            state.user.cardNumber!.length >= 16)
+                        ? '**** **** **** z${state.user.cardNumber!.substring(12, 16)}'
+                        : '**** **** **** ****',
                     style: whiteTextStyle.copyWith(
                       fontSize: 18,
                       fontWeight: medium,

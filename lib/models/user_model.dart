@@ -29,6 +29,7 @@ class UserModel {
         id: json['id'],
         name: json['name'],
         email: json['email'],
+        password: json['password'],
         username: json['username'],
         verified: json['verified'],
         profilePicture: json['profile_picture'],
@@ -45,17 +46,18 @@ class UserModel {
     String? pin,
     String? password,
     int? balance,
-  }) => UserModel(
-    id: id,
-    username: username ?? this.username,
-    name: name ?? this.name,
-    email: email ?? this.email,
-    pin: pin ?? this.pin,
-    password: password ?? this.password,
-    balance: balance ?? this.balance,
-    verified: verified,
-    profilePicture: profilePicture,
-    cardNumber: cardNumber,
-    token: token,
-  );
+  }) =>
+      UserModel(
+        id: id,
+        username: username ?? this.username,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        pin: pin ?? this.pin,
+        password: password ?? this.password,
+        balance: balance ?? this.balance,
+        verified: verified,
+        profilePicture: profilePicture,
+        cardNumber: cardNumber,
+        token: token,
+      );
 }
