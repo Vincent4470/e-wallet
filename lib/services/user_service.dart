@@ -31,7 +31,7 @@ class UserService {
       final token = await AuthService().getToken();
 
       final res = await http.get(
-        Uri.parse('$baseUrl/transfer_histories?limit=$limit'),
+        Uri.parse('$baseUrl/transfers_histories?limit=$limit'),
         headers: {
           'Authorization': token,
         },
