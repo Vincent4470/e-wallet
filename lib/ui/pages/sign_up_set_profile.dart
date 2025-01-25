@@ -110,7 +110,7 @@ class _SignUpSetProfilePageState extends State<SignUpSetProfilePage> {
                   height: 16,
                 ),
                 Text(
-                  'Vincent Etwin Mangapul',
+                  widget.data.name?? 'Your Name',
                   style: blackTextStyle.copyWith(
                     fontSize: 18,
                     fontWeight: medium,
